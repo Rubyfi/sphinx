@@ -142,7 +142,7 @@ class ParallelTasks:
         return joined_any
 
 
-def make_chunks(arguments: Sequence[str], nproc: int, maxbatch: int = 10) -> List[Any]:
+def make_chunks(arguments: Sequence[str], nproc: int, maxbatch: int = 1000) -> List[Any]:
     # determine how many documents to read in one go
     nargs = len(arguments)
     chunksize = nargs // nproc
