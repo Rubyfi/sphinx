@@ -585,6 +585,7 @@ class Builder:
         def write_process(docs: List[Tuple[str, nodes.document]]) -> None:
             self.app.phase = BuildPhase.WRITING
             for docname, doctree in docs:
+                self.env.events.emit('doctree-process', doctree, docname)
                 self.write_doc(docname, doctree)
 
         # warm up caches/compile templates using the first document
@@ -612,7 +613,6 @@ class Builder:
             arg = []
             for docname in chunk:
                 doctree = self.env.get_and_resolve_doctree(docname, self)
-                self.env.events.emit('doctree-process', doctree, docname)
                 self.write_doc_serialized(docname, doctree)
                 arg.append((docname, doctree))
             tasks.add_task(write_process, arg, on_chunk_done)
