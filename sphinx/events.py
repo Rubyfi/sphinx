@@ -40,6 +40,7 @@ core_events = {
     'missing-reference': 'env, node, contnode',
     'warn-missing-reference': 'domain, node',
     'doctree-resolved': 'doctree, docname',
+    'doctree-process': 'doctree, docname',
     'env-updated': 'env',
     'build-finished': 'exception',
 }

@@ -576,6 +576,7 @@ class Builder:
                                            len(docnames), self.app.verbosity):
                 self.app.phase = BuildPhase.RESOLVING
                 doctree = self.env.get_and_resolve_doctree(docname, self)
+                self.env.notify_write_prepocessors(doctree, docname)
                 self.app.phase = BuildPhase.WRITING
                 self.write_doc_serialized(docname, doctree)
                 self.write_doc(docname, doctree)
@@ -590,6 +591,7 @@ class Builder:
         firstname, docnames = docnames[0], docnames[1:]
         self.app.phase = BuildPhase.RESOLVING
         doctree = self.env.get_and_resolve_doctree(firstname, self)
+        self.env.events.emit('doctree-process', doctree, firstname)
         self.app.phase = BuildPhase.WRITING
         self.write_doc_serialized(firstname, doctree)
         self.write_doc(firstname, doctree)
@@ -610,6 +612,7 @@ class Builder:
             arg = []
             for docname in chunk:
                 doctree = self.env.get_and_resolve_doctree(docname, self)
+                self.env.events.emit('doctree-process', doctree, docname)
                 self.write_doc_serialized(docname, doctree)
                 arg.append((docname, doctree))
             tasks.add_task(write_process, arg, on_chunk_done)

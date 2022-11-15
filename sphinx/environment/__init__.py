@@ -589,7 +589,6 @@ class BuildEnvironment:
 
         # resolve all pending cross-references
         self.apply_post_transforms(doctree, docname)
-
         # now, resolve all toctree nodes
         for toctreenode in doctree.findall(addnodes.toctree):
             result = TocTree(self).resolve(docname, builder, toctreenode,
@@ -599,7 +598,6 @@ class BuildEnvironment:
                 toctreenode.replace_self([])
             else:
                 toctreenode.replace_self(result)
-
         return doctree
 
     def resolve_toctree(self, docname: str, builder: "Builder", toctree: addnodes.toctree,
@@ -623,6 +621,7 @@ class BuildEnvironment:
     def resolve_references(self, doctree: nodes.document, fromdocname: str,
                            builder: "Builder") -> None:
         self.apply_post_transforms(doctree, fromdocname)
+        self.events.emit('doctree-process', doctree, fromdocname)
 
     def apply_post_transforms(self, doctree: nodes.document, docname: str) -> None:
         """Apply all post-transforms."""
